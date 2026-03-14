@@ -13,12 +13,20 @@ plugins {
 }
 
 extensions.configure(ReleaseExtension::class.java) {
-    tagTemplate.set($$"v${version}")
+    tagTemplate.set("v\$version")
     failOnSnapshotDependencies.set(false)
     git {
         requireBranch.set("master")
     }
 }
+
+val pluginIdsByModule = mapOf(
+    "install-plugin" to "modular",
+    "loader-plugin" to "modular.load",
+    "kotlin-plugin" to "modular.kotlin",
+    "javascript-plugin" to "modular.javascript",
+    "spring-boot-plugin" to "modular.spring-boot"
+)
 
 val packageDescriptions = mapOf(
     "shared" to "Shared utilities and extensions for Modular Gradle plugins.",
@@ -45,7 +53,11 @@ subprojects {
     }
 
     tasks.withType(PublishToMavenRepository::class.java).configureEach {
-        onlyIf { !project.version.toString().endsWith("-SNAPSHOT") }
+        onlyIf {
+            !project.version.toString().endsWith("-SNAPSHOT") &&
+                    publication.name != "pluginMaven" &&
+                    !publication.name.endsWith("PluginMarkerMaven")
+        }
     }
 
     afterEvaluate {
@@ -67,6 +79,32 @@ subprojects {
                         groupId = project.group.toString()
                         artifactId = project.name
                         version = project.version.toString()
+                    }
+                }
+
+                // Custom plugin marker with coordinates:
+                // groupId: emprestes.modular.<plugin>
+                // artifactId: modular.<plugin>.gradle.plugin
+                pluginIdsByModule[project.name]?.let { pluginId ->
+                    if (findByName("customPluginMarker") == null) {
+                        create<MavenPublication>("customPluginMarker") {
+                            groupId = "emprestes.$pluginId"
+                            artifactId = "$pluginId.gradle.plugin"
+                            version = project.version.toString()
+
+                            pom {
+                                packaging = "pom"
+                                name.set("$groupId:$artifactId")
+                                description.set("Gradle plugin marker for $pluginId")
+                                withXml {
+                                    val deps = asNode().appendNode("dependencies")
+                                    val dep = deps.appendNode("dependency")
+                                    dep.appendNode("groupId", project.group.toString())
+                                    dep.appendNode("artifactId", project.name)
+                                    dep.appendNode("version", project.version.toString())
+                                }
+                            }
+                        }
                     }
                 }
 
