@@ -5,13 +5,14 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import kotlin.jvm.java
 
 plugins {
     id("net.researchgate.release") version "3.1.0"
 }
 
 extensions.configure(ReleaseExtension::class.java) {
-    tagTemplate.set("v\${version}")
+    tagTemplate.set($$"v${version}")
     failOnSnapshotDependencies.set(false)
     git {
         requireBranch.set("master")
