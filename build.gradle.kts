@@ -30,11 +30,15 @@ subprojects {
 
         extensions.configure(PublishingExtension::class.java) {
             publications {
-                create<MavenPublication>("maven") {
-                    from(components.findByName("java"))
-                    groupId = project.group.toString()
-                    artifactId = project.name
-                    version = project.version.toString()
+                // Publish explicit `maven` publication only for the shared module.
+                // Gradle plugin modules already provide plugin-specific publications.
+                if (project.name == "shared" && findByName("maven") == null) {
+                    create<MavenPublication>("maven") {
+                        from(components.findByName("java"))
+                        groupId = project.group.toString()
+                        artifactId = project.name
+                        version = project.version.toString()
+                    }
                 }
             }
             repositories {
