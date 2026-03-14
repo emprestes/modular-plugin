@@ -1,6 +1,7 @@
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 subprojects {
@@ -13,6 +14,10 @@ subprojects {
     }
 
     apply(plugin = "maven-publish")
+
+    tasks.withType(Test::class.java).configureEach {
+        jvmArgs("--enable-native-access=ALL-UNNAMED")
+    }
 
     afterEvaluate {
         extensions.findByType(JavaPluginExtension::class.java)?.apply {
