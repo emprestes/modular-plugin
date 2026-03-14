@@ -1,3 +1,4 @@
+import net.researchgate.release.ReleaseExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
@@ -7,6 +8,14 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 plugins {
     id("net.researchgate.release") version "3.1.0"
+}
+
+extensions.configure(ReleaseExtension::class.java) {
+    tagTemplate.set("v\${version}")
+    failOnSnapshotDependencies.set(false)
+    git {
+        requireBranch.set("master")
+    }
 }
 
 subprojects {
