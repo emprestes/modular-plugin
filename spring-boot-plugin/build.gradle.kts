@@ -16,7 +16,7 @@ tasks.withType<Test> {
 gradlePlugin {
     plugins {
         create("moduleSpringBoot") {
-            id = "modular.spring-boot"
+            id = "emprestes.modular.spring-boot"
             implementationClass = "emprestes.modular.plugin.SpringBootModulePlugin"
         }
     }

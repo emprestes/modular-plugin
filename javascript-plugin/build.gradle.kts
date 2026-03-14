@@ -17,7 +17,7 @@ tasks.withType<Test> {
 gradlePlugin {
     plugins {
         create("moduleJavaScript") {
-            id = "modular.javascript"
+            id = "emprestes.modular.javascript"
             implementationClass = "emprestes.modular.plugin.JavaScriptModulePlugin"
         }
     }
