@@ -1,4 +1,6 @@
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 subprojects {
@@ -10,10 +12,35 @@ subprojects {
         mavenCentral()
     }
 
+    apply(plugin = "maven-publish")
+
     afterEvaluate {
         extensions.findByType(JavaPluginExtension::class.java)?.apply {
             toolchain {
                 languageVersion.set(JavaLanguageVersion.of(24))
+            }
+            withSourcesJar()
+            withJavadocJar()
+        }
+
+        extensions.configure(PublishingExtension::class.java) {
+            publications {
+                create<MavenPublication>("maven") {
+                    from(components.findByName("java"))
+                    groupId = project.group.toString()
+                    artifactId = project.name
+                    version = project.version.toString()
+                }
+            }
+            repositories {
+                maven {
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/emprestes/modular-plugin")
+                    credentials {
+                        username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user")?.toString()
+                        password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.token")?.toString()
+                    }
+                }
             }
         }
     }
