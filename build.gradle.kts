@@ -9,6 +9,7 @@ import kotlin.jvm.java
 
 plugins {
     id("net.researchgate.release") version "3.1.0"
+    kotlin("jvm") version "2.2.20" apply false
 }
 
 extensions.configure(ReleaseExtension::class.java) {
