@@ -15,7 +15,7 @@ tasks.withType<Test> {
 gradlePlugin {
     plugins {
         create("moduleLoader") {
-            id = "modular.modules.load"
+            id = "emprestes.modular.modules.load"
             implementationClass = "emprestes.modular.plugin.LoaderModulePlugin"
         }
     }

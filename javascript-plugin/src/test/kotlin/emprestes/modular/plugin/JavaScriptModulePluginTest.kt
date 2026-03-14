@@ -16,7 +16,7 @@ class JavaScriptModulePluginTest {
     fun `plugin applies without error`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("modular.modules.javascript")
+                id("emprestes.modular.modules.javascript")
             }
         """.trimIndent())
         File(projectDir, "settings.gradle.kts").writeText("")
@@ -34,7 +34,7 @@ class JavaScriptModulePluginTest {
     fun `plugin registers showMeJSConfig task`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("modular.modules.javascript")
+                id("emprestes.modular.modules.javascript")
             }
         """.trimIndent())
         File(projectDir, "settings.gradle.kts").writeText("")
@@ -52,7 +52,7 @@ class JavaScriptModulePluginTest {
     fun `plugin creates jsModules extension`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("modular.modules.javascript")
+                id("emprestes.modular.modules.javascript")
             }
             jsModules {
                 debugMode = true

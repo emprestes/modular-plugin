@@ -7,11 +7,11 @@ Modular Gradle plugins for multi-module projects.
 | Module | Plugin ID | Description |
 |--------|-----------|-------------|
 | `shared` | — | Common utilities (`ModularExtension`, `containsIn`) |
-| `loader-plugin` | `modular.modules.load` | Settings plugin that auto-discovers modules |
-| `install-plugin` | `modular.modules` | Registers `install` tasks for submodules |
-| `kotlin-plugin` | `modular.modules.kotlin` | Configures Kotlin/JVM subprojects |
-| `javascript-plugin` | `modular.modules.javascript` | Configures Node.js/JS subprojects |
-| `spring-boot-plugin` | `modular.modules.spring-boot` | Discovers Spring Boot modules |
+| `loader-plugin` | `emprestes.modular.modules.load` | Settings plugin that auto-discovers modules |
+| `install-plugin` | `emprestes.modular.modules` | Registers `install` tasks for submodules |
+| `kotlin-plugin` | `emprestes.modular.modules.kotlin` | Configures Kotlin/JVM subprojects |
+| `javascript-plugin` | `emprestes.modular.modules.javascript` | Configures Node.js/JS subprojects |
+| `spring-boot-plugin` | `emprestes.modular.modules.spring-boot` | Discovers Spring Boot modules |
 
 ## Build
 

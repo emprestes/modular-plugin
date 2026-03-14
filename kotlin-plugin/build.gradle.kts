@@ -18,7 +18,7 @@ tasks.withType<Test> {
 gradlePlugin {
     plugins {
         create("moduleKotlin") {
-            id = "modular.modules.kotlin"
+            id = "emprestes.modular.modules.kotlin"
             implementationClass = "emprestes.modular.plugin.KotlinModulePlugin"
         }
     }
