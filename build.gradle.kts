@@ -1,8 +1,13 @@
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+
+plugins {
+    id("net.researchgate.release") version "3.1.0"
+}
 
 subprojects {
     group = "${rootProject.property("group")}"
@@ -17,6 +22,10 @@ subprojects {
 
     tasks.withType(Test::class.java).configureEach {
         jvmArgs("--enable-native-access=ALL-UNNAMED")
+    }
+
+    tasks.withType(PublishToMavenRepository::class.java).configureEach {
+        onlyIf { !project.version.toString().endsWith("-SNAPSHOT") }
     }
 
     afterEvaluate {
