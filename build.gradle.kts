@@ -20,6 +20,15 @@ extensions.configure(ReleaseExtension::class.java) {
     }
 }
 
+val packageDescriptions = mapOf(
+    "shared" to "Shared utilities and extensions for Modular Gradle plugins.",
+    "loader-plugin" to "Settings plugin that auto-discovers and includes multi-module projects.",
+    "install-plugin" to "Plugin that registers install aggregation tasks for modular projects.",
+    "kotlin-plugin" to "Plugin that standardizes Kotlin/JVM module conventions.",
+    "javascript-plugin" to "Plugin that configures Node.js/JavaScript modules and tasks.",
+    "spring-boot-plugin" to "Plugin that detects and configures Spring Boot modules."
+)
+
 subprojects {
     group = "${rootProject.property("group")}"
     version = "${rootProject.property("version")}"
@@ -58,6 +67,28 @@ subprojects {
                         groupId = project.group.toString()
                         artifactId = project.name
                         version = project.version.toString()
+                    }
+                }
+
+                withType(MavenPublication::class.java).configureEach {
+                    pom {
+                        name.set("${project.group}:${project.name}")
+                        description.set(
+                            packageDescriptions[project.name]
+                                ?: "Modular Gradle plugin module: ${project.name}."
+                        )
+                        url.set("https://github.com/emprestes/modular-plugin")
+                        licenses {
+                            license {
+                                name.set("MIT License")
+                                url.set("https://opensource.org/licenses/MIT")
+                            }
+                        }
+                        scm {
+                            url.set("https://github.com/emprestes/modular-plugin")
+                            connection.set("scm:git:https://github.com/emprestes/modular-plugin.git")
+                            developerConnection.set("scm:git:ssh://git@github.com/emprestes/modular-plugin.git")
+                        }
                     }
                 }
             }
