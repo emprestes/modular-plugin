@@ -16,7 +16,7 @@ class KotlinModulePluginTest {
     fun `plugin applies without error`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.modules.kotlin")
+                id("emprestes.modular.kotlin")
             }
         """.trimIndent())
         File(projectDir, "settings.gradle.kts").writeText("")
@@ -40,7 +40,7 @@ class KotlinModulePluginTest {
     fun `plugin registers showMeKotlinConfig task`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.modules.kotlin")
+                id("emprestes.modular.kotlin")
             }
         """.trimIndent())
         File(projectDir, "settings.gradle.kts").writeText("")
@@ -64,7 +64,7 @@ class KotlinModulePluginTest {
     fun `plugin creates kotlinModules extension`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.modules.kotlin")
+                id("emprestes.modular.kotlin")
             }
             kotlinModules {
                 debugMode = true

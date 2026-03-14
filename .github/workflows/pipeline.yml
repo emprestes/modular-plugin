@@ -170,11 +170,15 @@ jobs:
 
       - name: Validate plugin ID namespace
         run: |
-          if grep -R --line-number 'id = "modular\.modules' ./*/build.gradle.kts; then
-            echo "❌ Legacy plugin namespace found (modular.modules.*). Expected emprestes.modular.modules.*"
+          if grep -R --line-number 'id = "modular\(\.|"\)' ./*/build.gradle.kts; then
+            echo "❌ Legacy plugin namespace found (modular.*). Expected emprestes.modular.*"
             exit 1
           fi
-          echo "✅ Plugin namespace is emprestes.modular.modules.*"
+          if grep -R --line-number 'id = "modular\.modules' ./*/build.gradle.kts; then
+            echo "❌ Legacy plugin namespace found (modular.modules.*). Expected emprestes.modular.*"
+            exit 1
+          fi
+          echo "✅ Plugin namespace is emprestes.modular.*"
 
       - name: Set up JDK 24
         uses: actions/setup-java@v5

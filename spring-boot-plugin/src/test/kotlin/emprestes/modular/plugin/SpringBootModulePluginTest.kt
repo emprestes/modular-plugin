@@ -16,7 +16,7 @@ class SpringBootModulePluginTest {
     fun `plugin applies without error`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.modules.spring-boot")
+                id("emprestes.modular.spring-boot")
             }
         """.trimIndent())
         File(projectDir, "settings.gradle.kts").writeText("")
@@ -34,7 +34,7 @@ class SpringBootModulePluginTest {
     fun `plugin creates springBootModules extension`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.modules.spring-boot")
+                id("emprestes.modular.spring-boot")
             }
             springBootModules {
                 debugMode = true
@@ -55,7 +55,7 @@ class SpringBootModulePluginTest {
     fun `plugin reports zero spring boot modules when none exist`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.modules.spring-boot")
+                id("emprestes.modular.spring-boot")
             }
         """.trimIndent())
         File(projectDir, "settings.gradle.kts").writeText("")
