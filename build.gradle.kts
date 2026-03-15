@@ -83,8 +83,9 @@ subprojects {
                 }
 
                 // Custom plugin marker with coordinates:
-                // groupId: emprestes.modular.<plugin>
+                // groupId: emprestes
                 // artifactId: modular.<plugin>.gradle.plugin
+                // → GH Packages name: emprestes.modular.<plugin>.gradle.plugin
                 pluginIdsByModule[project.name]?.let { pluginId ->
                     if (findByName("customPluginMarker") == null) {
                         create<MavenPublication>("customPluginMarker") {
