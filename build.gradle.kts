@@ -88,7 +88,7 @@ subprojects {
                 pluginIdsByModule[project.name]?.let { pluginId ->
                     if (findByName("customPluginMarker") == null) {
                         create<MavenPublication>("customPluginMarker") {
-                            groupId = "emprestes.$pluginId"
+                            groupId = "emprestes"
                             artifactId = "$pluginId.gradle.plugin"
                             version = project.version.toString()
 
