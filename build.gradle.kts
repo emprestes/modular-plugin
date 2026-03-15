@@ -21,7 +21,7 @@ extensions.configure(ReleaseExtension::class.java) {
 }
 
 val pluginIdsByModule = mapOf(
-    "install-plugin" to "modular.install",
+    "install-plugin" to "modular",
     "loader-plugin" to "modular.loader",
     "kotlin-plugin" to "modular.kotlin",
     "javascript-plugin" to "modular.javascript",

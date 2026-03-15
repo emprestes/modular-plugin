@@ -16,7 +16,7 @@ class InstallModulePluginTest {
     fun `plugin applies without error`() {
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.install")
+                id("emprestes.modular")
             }
         """.trimIndent())
         File(projectDir, "settings.gradle.kts").writeText("")
@@ -39,7 +39,7 @@ class InstallModulePluginTest {
         File(projectDir, "settings.gradle.kts").writeText("""include("_mymodule")""")
         File(projectDir, "build.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.install")
+                id("emprestes.modular")
             }
         """.trimIndent())
 
