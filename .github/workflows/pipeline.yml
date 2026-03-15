@@ -3,9 +3,9 @@ run-name: "${{ github.workflow }} · ${{ github.event_name }} · ${{ github.ref_
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
   push:
-    branches: [ master ]
+    branches: [ master, main ]
   workflow_dispatch:
 
 permissions:

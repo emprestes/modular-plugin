@@ -16,7 +16,7 @@ class LoaderModulePluginTest {
     fun `plugin applies without error`() {
         File(projectDir, "settings.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.load")
+                id("emprestes.modular.loader")
             }
             
         """.trimIndent())
@@ -39,7 +39,7 @@ class LoaderModulePluginTest {
         File(subDir, "build.gradle.kts").writeText("")
         File(projectDir, "settings.gradle.kts").writeText("""
             plugins {
-                id("emprestes.modular.load")
+                id("emprestes.modular.loader")
             }
         """.trimIndent())
         File(projectDir, "gradle.properties").writeText("artifact=test-project\n")

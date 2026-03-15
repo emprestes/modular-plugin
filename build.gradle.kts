@@ -22,7 +22,7 @@ extensions.configure(ReleaseExtension::class.java) {
 
 val pluginIdsByModule = mapOf(
     "install-plugin" to "modular",
-    "loader-plugin" to "modular.load",
+    "loader-plugin" to "modular.loader",
     "kotlin-plugin" to "modular.kotlin",
     "javascript-plugin" to "modular.javascript",
     "spring-boot-plugin" to "modular.spring-boot"
@@ -76,22 +76,18 @@ subprojects {
                 if (project.name == "shared" && findByName("maven") == null) {
                     create<MavenPublication>("maven") {
                         from(components.findByName("java"))
-                        groupId = project.group.toString()
+                        groupId = "${project.group}"
                         artifactId = project.name
-                        version = project.version.toString()
+                        version = "${project.version}"
                     }
                 }
 
-                // Custom plugin marker with coordinates:
-                // groupId: emprestes
-                // artifactId: modular.<plugin>.gradle.plugin
-                // → GH Packages name: emprestes.modular.<plugin>.gradle.plugin
                 pluginIdsByModule[project.name]?.let { pluginId ->
                     if (findByName("customPluginMarker") == null) {
                         create<MavenPublication>("customPluginMarker") {
                             groupId = "emprestes"
                             artifactId = "$pluginId.gradle.plugin"
-                            version = project.version.toString()
+                            version = "${project.version}"
 
                             pom {
                                 packaging = "pom"
@@ -100,9 +96,9 @@ subprojects {
                                 withXml {
                                     val deps = asNode().appendNode("dependencies")
                                     val dep = deps.appendNode("dependency")
-                                    dep.appendNode("groupId", project.group.toString())
+                                    dep.appendNode("groupId", "${project.group}")
                                     dep.appendNode("artifactId", project.name)
-                                    dep.appendNode("version", project.version.toString())
+                                    dep.appendNode("version", "${project.version}")
                                 }
                             }
                         }
