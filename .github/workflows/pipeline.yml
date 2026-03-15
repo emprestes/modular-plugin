@@ -34,7 +34,7 @@ jobs:
           java-version: 24
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Build (assemble)
         run: ./gradlew clean assemble
@@ -58,7 +58,7 @@ jobs:
           java-version: 24
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Run tests
         run: ./gradlew test
@@ -67,7 +67,9 @@ jobs:
     name: "release-plan"
     runs-on: ubuntu-latest
     needs: test
-    if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && !contains(github.event.head_commit.message, '[Gradle Release Plugin]')
+    if: >-
+      github.ref == 'refs/heads/master'
+      && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     outputs:
       current_version: ${{ steps.plan.outputs.current_version }}
       release_version: ${{ steps.plan.outputs.release_version }}
@@ -77,8 +79,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Skip if release plugin commit
+        id: guard
+        run: |
+          MSG=$(git log -1 --pretty=%s)
+          echo "commit_message=$MSG"
+          if [[ "$MSG" == *"[Gradle Release Plugin]"* ]]; then
+            echo "🛑 Release plugin commit detected — skipping release."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Resolve release plan
+        if: steps.guard.outputs.skip != 'true'
         id: plan
         shell: bash
         run: |
@@ -105,6 +122,7 @@ jobs:
           echo "should_publish=true" >> "$GITHUB_OUTPUT"
 
       - name: Plan summary
+        if: steps.guard.outputs.skip != 'true'
         run: |
           echo "### Release plan" >> "$GITHUB_STEP_SUMMARY"
           echo "- Current version: ${{ steps.plan.outputs.current_version }}" >> "$GITHUB_STEP_SUMMARY"
@@ -136,7 +154,7 @@ jobs:
           java-version: 24
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Configure git user
         run: |
@@ -188,7 +206,7 @@ jobs:
           java-version: 24
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Artifacts to publish
         run: |
