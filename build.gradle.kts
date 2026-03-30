@@ -20,14 +20,6 @@ extensions.configure(ReleaseExtension::class.java) {
     }
 }
 
-val pluginIdsByModule = mapOf(
-    "install-plugin" to "modular",
-    "loader-plugin" to "modular.loader",
-    "kotlin-plugin" to "modular.kotlin",
-    "javascript-plugin" to "modular.javascript",
-    "spring-boot-plugin" to "modular.spring-boot"
-)
-
 val packageDescriptions = mapOf(
     "shared" to "Shared utilities and extensions for Modular Gradle plugins.",
     "loader-plugin" to "Settings plugin that auto-discovers and includes multi-module projects.",
@@ -54,9 +46,7 @@ subprojects {
 
     tasks.withType(PublishToMavenRepository::class.java).configureEach {
         onlyIf {
-            !project.version.toString().endsWith("-SNAPSHOT") &&
-                    publication.name != "pluginMaven" &&
-                    !publication.name.endsWith("PluginMarkerMaven")
+            !project.version.toString().endsWith("-SNAPSHOT")
         }
     }
 
@@ -79,29 +69,6 @@ subprojects {
                         groupId = "${project.group}"
                         artifactId = project.name
                         version = "${project.version}"
-                    }
-                }
-
-                pluginIdsByModule[project.name]?.let { pluginId ->
-                    if (findByName("customPluginMarker") == null) {
-                        create<MavenPublication>("customPluginMarker") {
-                            groupId = "emprestes"
-                            artifactId = "$pluginId.gradle.plugin"
-                            version = "${project.version}"
-
-                            pom {
-                                packaging = "pom"
-                                name.set("$groupId:$artifactId")
-                                description.set("Gradle plugin marker for $pluginId")
-                                withXml {
-                                    val deps = asNode().appendNode("dependencies")
-                                    val dep = deps.appendNode("dependency")
-                                    dep.appendNode("groupId", "${project.group}")
-                                    dep.appendNode("artifactId", project.name)
-                                    dep.appendNode("version", "${project.version}")
-                                }
-                            }
-                        }
                     }
                 }
 
