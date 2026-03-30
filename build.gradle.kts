@@ -22,10 +22,10 @@ extensions.configure(ReleaseExtension::class.java) {
 
 val pluginIdsByModule = mapOf(
     "install-plugin" to "modular",
-    "loader-plugin" to "modular.loader",
-    "kotlin-plugin" to "modular.kotlin",
-    "javascript-plugin" to "modular.javascript",
-    "spring-boot-plugin" to "modular.spring-boot"
+    "loader-plugin" to "loader",
+    "kotlin-plugin" to "kotlin",
+    "javascript-plugin" to "javascript",
+    "spring-boot-plugin" to "spring-boot"
 )
 
 val packageDescriptions = mapOf(
@@ -82,13 +82,13 @@ subprojects {
                 }
 
                 // Custom plugin marker with coordinates:
-                // groupId: emprestes
-                // artifactId: modular.<plugin>.gradle.plugin
+                // groupId: emprestes.modular
+                // artifactId: <plugin>.gradle.plugin
                 // → GH Packages name: emprestes.modular.<plugin>.gradle.plugin
                 pluginIdsByModule[project.name]?.let { pluginId ->
                     if (findByName("customPluginMarker") == null) {
                         create<MavenPublication>("customPluginMarker") {
-                            groupId = "emprestes"
+                            groupId = "emprestes.modular"
                             artifactId = "$pluginId.gradle.plugin"
                             version = "${project.version}"
 
