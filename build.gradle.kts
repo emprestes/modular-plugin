@@ -54,8 +54,8 @@ subprojects {
 
     tasks.withType(PublishToMavenRepository::class.java).configureEach {
         onlyIf {
-            !project.version.toString().endsWith("-SNAPSHOT") &&
-                    !publication.name.endsWith("PluginMarkerMaven")
+            // Publish all plugin publications (including PluginMarkerMaven) for release versions.
+            !project.version.toString().endsWith("-SNAPSHOT")
         }
     }
 
@@ -81,32 +81,7 @@ subprojects {
                     }
                 }
 
-                // Custom plugin marker with coordinates:
-                // groupId: emprestes.modular
-                // artifactId: <plugin>.gradle.plugin
-                // → GH Packages name: emprestes.modular.<plugin>.gradle.plugin
-                pluginIdsByModule[project.name]?.let { pluginId ->
-                    if (findByName("customPluginMarker") == null) {
-                        create<MavenPublication>("customPluginMarker") {
-                            groupId = "emprestes.modular"
-                            artifactId = "$pluginId.gradle.plugin"
-                            version = "${project.version}"
-
-                            pom {
-                                packaging = "pom"
-                                name.set("$groupId:$artifactId")
-                                description.set("Gradle plugin marker for $pluginId")
-                                withXml {
-                                    val deps = asNode().appendNode("dependencies")
-                                    val dep = deps.appendNode("dependency")
-                                    dep.appendNode("groupId", "${project.group}")
-                                    dep.appendNode("artifactId", project.name)
-                                    dep.appendNode("version", "${project.version}")
-                                }
-                            }
-                        }
-                    }
-                }
+                // Use Gradle's standard PluginMarkerMaven publications (no custom markers).
 
                 withType(MavenPublication::class.java).configureEach {
                     pom {
