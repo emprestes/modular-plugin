@@ -66,6 +66,8 @@ jobs:
   package:
     runs-on: ubuntu-latest
     needs: test
+    # Only on master merge/push; other branches stop at test
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
       JAVA_TOOL_OPTIONS: --enable-native-access=ALL-UNNAMED --sun-misc-unsafe-memory-access=allow
@@ -100,7 +102,8 @@ jobs:
     name: "release-plan"
     runs-on: ubuntu-latest
     needs: package
-    if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && !contains(github.event.head_commit.message, '[Gradle Release Plugin]')
+    # Only on master merge/push; same guard as package
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push' && !contains(github.event.head_commit.message, '[Gradle Release Plugin]')
     outputs:
       current_version: ${{ steps.plan.outputs.current_version }}
       release_version: ${{ steps.plan.outputs.release_version }}
