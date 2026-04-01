@@ -76,7 +76,11 @@ class KotlinModulePlugin : Plugin<Project> {
                             ext.configure(PublishingExtension::class.java) {
                                 publications {
                                     create("maven", MavenPublication::class.java) {
-                                        from(components["java"])
+                                        components.findByName("java")?.let { from(it) }
+                                            ?: run {
+                                                println("[modular.kotlin] Skipping publication for ${it.path} (no 'java' component)")
+                                                return@create
+                                            }
                                     }
                                 }
 
