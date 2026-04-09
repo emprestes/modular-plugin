@@ -44,8 +44,8 @@ class KotlinModulePlugin : Plugin<Project> {
 
                         it.apply(plugin = "java-library")
                         it.apply(plugin = "maven-publish")
-                        it.apply(plugin = "kotlin")
-                        it.apply(plugin = "kotlin-spring")
+                        it.apply(plugin = "org.jetbrains.kotlin.jvm")
+                        it.apply(plugin = "org.jetbrains.kotlin.plugin.spring")
                         it.apply(plugin = "com.diffplug.spotless")
                         it.apply(plugin = "io.spring.dependency-management")
 
