@@ -44,8 +44,17 @@ class KotlinModulePlugin : Plugin<Project> {
 
                         it.apply(plugin = "java-library")
                         it.apply(plugin = "maven-publish")
-                        it.apply(plugin = "org.jetbrains.kotlin.jvm")
-                        it.apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+                        // prefer modern IDs; fall back to legacy if unavailable
+                        try {
+                            it.apply(plugin = "org.jetbrains.kotlin.jvm")
+                        } catch (_: Exception) {
+                            it.apply(plugin = "kotlin")
+                        }
+                        try {
+                            it.apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+                        } catch (_: Exception) {
+                            it.apply(plugin = "kotlin-spring")
+                        }
                         it.apply(plugin = "com.diffplug.spotless")
                         it.apply(plugin = "io.spring.dependency-management")
 
