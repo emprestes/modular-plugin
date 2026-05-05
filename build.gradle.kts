@@ -1,15 +1,9 @@
+
 import net.researchgate.release.ReleaseExtension
-import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
-import org.gradle.api.tasks.testing.Test
-import org.gradle.jvm.toolchain.JavaLanguageVersion
-import kotlin.jvm.java
 
 plugins {
     id("net.researchgate.release") version "3.1.0"
-    kotlin("jvm") version "2.2.20" apply false
+    kotlin("jvm") version "2.3.20" apply false
 }
 
 extensions.configure(ReleaseExtension::class.java) {
@@ -55,7 +49,9 @@ subprojects {
     tasks.withType(PublishToMavenRepository::class.java).configureEach {
         onlyIf {
             // Publish all plugin publications (including PluginMarkerMaven) for release versions.
-            !project.version.toString().endsWith("-SNAPSHOT")
+            project.let {
+                !"${it.version}".endsWith("- KotlinToolingVersion.Maturity.SNAPSHOT")
+            }
         }
     }
 
