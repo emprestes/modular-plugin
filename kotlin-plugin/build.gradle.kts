@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(kotlin("gradle-plugin", "2.2.20"))
+    implementation(kotlin("gradle-plugin", "2.3.20"))
     implementation("com.diffplug.spotless:spotless-plugin-gradle:7.0.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     testImplementation("org.springframework.boot:spring-boot-gradle-plugin:4.0.3")

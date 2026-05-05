@@ -2,13 +2,11 @@ package emprestes.modular.plugin
 
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import kotlin.io.path.Path
 import kotlin.io.path.writeText
 
-@Disabled("TestKit environment cannot resolve kotlin-spring plugin; to be revisited with published markers")
 class KotlinModulePluginTest {
 
     @TempDir
@@ -28,6 +26,7 @@ class KotlinModulePluginTest {
             .withProjectDir(projectDir)
             .withPluginClasspath()
             .withArguments("assertAll", "--stacktrace", "--init-script", initScript.absolutePath)
+            .withDebug(true)
             .forwardOutput()
             .build()
     }
@@ -44,8 +43,8 @@ class KotlinModulePluginTest {
                             gradlePluginPortal()
                         }
                         dependencies {
-                            classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20")
-                            classpath("org.jetbrains.kotlin:kotlin-allopen:2.2.20")
+                            classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.20")
+                            classpath("org.jetbrains.kotlin:kotlin-allopen:2.3.20")
                             classpath("org.springframework.boot:spring-boot-gradle-plugin:4.0.3")
                             classpath("io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.6")
                             classpath("com.diffplug.spotless:spotless-plugin-gradle:7.0.2")
@@ -69,10 +68,10 @@ class KotlinModulePluginTest {
                 resolutionStrategy {
                     eachPlugin {
                         if (requested.id.id == "org.jetbrains.kotlin.plugin.spring") {
-                            useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20")
+                            useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.20")
                         }
                         if (requested.id.id == "org.jetbrains.kotlin.jvm") {
-                            useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20")
+                            useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.20")
                         }
                     }
                 }
@@ -88,7 +87,7 @@ class KotlinModulePluginTest {
             """
             jdkVersion=24
             jvmArgs=-Xmx1g,-Xms1g
-            kotlinVersion=2.2.20
+            kotlinVersion=2.3.20
             charset=UTF-8
             """.trimIndent(),
         )
@@ -104,9 +103,8 @@ class KotlinModulePluginTest {
                     gradlePluginPortal()
                 }
                 dependencies {
-                    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20")
-                    classpath("org.jetbrains.kotlin:kotlin-allopen:2.2.20")
-                    classpath("org.jetbrains.kotlin:kotlin-spring:2.2.20")
+                    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.20")
+                    classpath("org.jetbrains.kotlin:kotlin-allopen:2.3.20")
                     classpath("org.springframework.boot:spring-boot-gradle-plugin:4.0.3")
                     classpath("io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.6")
                     classpath("com.diffplug.spotless:spotless-plugin-gradle:7.0.2")
@@ -125,9 +123,8 @@ class KotlinModulePluginTest {
                         gradlePluginPortal()
                     }
                     dependencies {
-                        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20")
-                        classpath("org.jetbrains.kotlin:kotlin-allopen:2.2.20")
-                        classpath("org.jetbrains.kotlin:kotlin-spring:2.2.20")
+                        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.20")
+                        classpath("org.jetbrains.kotlin:kotlin-allopen:2.3.20")
                         classpath("org.springframework.boot:spring-boot-gradle-plugin:4.0.3")
                         classpath("io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.6")
                         classpath("com.diffplug.spotless:spotless-plugin-gradle:7.0.2")
@@ -147,8 +144,7 @@ class KotlinModulePluginTest {
         Path(projectDir.path, "app/build.gradle.kts").writeText(
             """
             plugins {
-                id("org.jetbrains.kotlin.jvm") version "2.2.20"
-                id("org.jetbrains.kotlin.plugin.spring") version "2.2.20"
+                id("kotlin")
             }
 
             tasks.register("assertKotlinModuleConfig") {
@@ -198,8 +194,8 @@ class KotlinModulePluginTest {
         Path(projectDir.path, "boot-app/build.gradle.kts").writeText(
             """
             plugins {
-                id("org.jetbrains.kotlin.jvm") version "2.2.20"
-                id("org.jetbrains.kotlin.plugin.spring") version "2.2.20"
+                id("org.jetbrains.kotlin.jvm") version "2.3.20"
+                id("org.jetbrains.kotlin.plugin.spring") version "2.3.20"
                 id("org.springframework.boot") version "4.0.3"
             }
 

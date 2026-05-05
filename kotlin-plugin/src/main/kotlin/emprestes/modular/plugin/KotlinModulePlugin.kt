@@ -11,7 +11,6 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.filter
-import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
@@ -85,11 +84,7 @@ class KotlinModulePlugin : Plugin<Project> {
                             ext.configure(PublishingExtension::class.java) {
                                 publications {
                                     create("maven", MavenPublication::class.java) {
-                                        components.findByName("java")?.let { from(it) }
-                                            ?: run {
-                                                println("[modular.kotlin] Skipping publication for ${it.path} (no 'java' component)")
-                                                return@create
-                                            }
+                                        components.forEach(::from)
                                     }
                                 }
 
